@@ -47,7 +47,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: HelloLambdaFunction
-      Role: "arn:aws:iam::211125579531:role/LabRole"
+      Role: "arn:aws:iam::058264339929:role/LabRole"
       Runtime: python3.11
       Handler: index.my_handler
       Code:
