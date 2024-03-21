@@ -36,3 +36,9 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       BucketName: "coloscript-unibg"
+
+  LogS3Bucket:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: "cololog-unibg"
