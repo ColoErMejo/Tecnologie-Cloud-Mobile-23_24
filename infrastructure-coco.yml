@@ -30,3 +30,9 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       BucketName: "coloprova-unibg"
+
+  ScriptS3Bucket:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: "coloscript-unibg"
