@@ -29,25 +29,25 @@ Resources:
     Type: "AWS::S3::Bucket"
     DeletionPolicy: Retain
     Properties:
-      BucketName: "coloprova-unibg"
+      BucketName: "tedx-2024-colo-data"
 
   ScriptS3Bucket:
     Type: "AWS::S3::Bucket"
     DeletionPolicy: Retain
     Properties:
-      BucketName: "coloscript-unibg"
+      BucketName: "tedx-2024-colo-script"
 
   LogS3Bucket:
     Type: "AWS::S3::Bucket"
     DeletionPolicy: Retain
     Properties:
-      BucketName: "cololog-unibg"
+      BucketName: "tedx-2024-colo-logs"
 
   HelloLambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: HelloLambdaFunction
-      Role: "arn:aws:iam::058264339929:role/LabRole"
+      Role: "arn:aws:iam::344547808563:role/LabRole"
       Runtime: python3.11
       Handler: index.my_handler
       Code:
@@ -60,7 +60,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: FactorialLambdaFunction
-      Role: "arn:aws:iam::058264339929:role/LabRole"
+      Role: "arn:aws:iam::344547808563:role/LabRole"
       Runtime: python3.11
       Handler: index.my_handler
       Code:

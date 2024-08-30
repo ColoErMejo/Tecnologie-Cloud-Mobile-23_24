@@ -16,7 +16,7 @@ from awsglue.job import Job
 
 
 ##### FROM FILES
-tedx_dataset_path = "s3://tedx-2024-data/final_list.csv"
+tedx_dataset_path = "s3://tedx-2024-colo-data/final_list.csv"
 
 ###### READ PARAMETERS
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
@@ -27,8 +27,6 @@ sc = SparkContext()
 
 glueContext = GlueContext(sc)
 spark = glueContext.spark_session
-
-
     
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
@@ -52,7 +50,7 @@ print(f"Number of items from RAW DATA {count_items}")
 print(f"Number of items from RAW DATA with NOT NULL KEY {count_items_null}")
 
 ## READ THE DETAILS
-details_dataset_path = "s3://tedx-2024-data/details.csv"
+details_dataset_path = "s3://tedx-2024-colo-data/details.csv"
 details_dataset = spark.read \
     .option("header","true") \
     .option("quote", "\"") \
@@ -71,7 +69,7 @@ tedx_dataset_main = tedx_dataset.join(details_dataset, tedx_dataset.id == detail
 tedx_dataset_main.printSchema()
 
 ## READ TAGS DATASET
-tags_dataset_path = "s3://tedx-2024-data/tags.csv"
+tags_dataset_path = "s3://tedx-2024-colo-data/tags.csv"
 tags_dataset = spark.read.option("header","true").csv(tags_dataset_path)
 
 

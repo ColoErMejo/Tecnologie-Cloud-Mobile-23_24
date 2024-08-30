@@ -1,0 +1,1 @@
+ C:\\Users\\loren\\OneDrive\\Desktop\\UNIBG\\TecnoCloudMobile\\Tecnologie\ Cloud\ Mobile\ 23-24\\Tecnologie-Cloud-Mobile-23_24\\mytedx_xpodify\\.dart_tool\\flutter_build\\ab621290bdb023b8f392b38ffcd54462\\native_assets.yaml: 
