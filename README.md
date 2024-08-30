@@ -7,3 +7,6 @@ Il progetto **XPodify** si propone di creare un'applicazione che, analizzando i 
 
 ## Trello Board
 [Clicca Qui!](https://trello.com/b/fxPiqrAc/xpodify)
+
+## Credit
+Colombo Lorenzo [1081134]
