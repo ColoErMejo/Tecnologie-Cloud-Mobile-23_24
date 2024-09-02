@@ -28,7 +28,6 @@ tags_dataset = spark.read.option("header", "true").csv(tags_dataset_path)
 tedx_dataset = spark.read.option("header", "true").csv(tedx_dataset_path)
 
 # Carica i dati sui trend di ricerca
-# Assumiamo che tu abbia già eseguito lo script Python con Pytrends e salvato i dati su S3
 trends_dataset_path = "s3://tedx-2024-colo-data/trends.csv"
 trends_dataset = spark.read.option("header", "true").csv(trends_dataset_path)
 
