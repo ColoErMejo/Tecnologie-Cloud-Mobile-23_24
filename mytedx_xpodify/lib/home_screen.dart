@@ -8,7 +8,6 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -24,13 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: json.encode({
-        'tag': tag // Verifica se il formato corretto è solo una stringa
-      }),
+      body: json.encode({'tag': tag}),
     );
 
     print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}'); // Stampa la risposta dell'API
+    print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       try {
@@ -48,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _search() {
-    final tag = _searchController.text.trim(); // Rimuovi spazi extra
+    final tag = _searchController.text.trim();
     if (tag.isNotEmpty) {
       setState(() {
         _futureTedTalks = fetchTedTalks(tag);
@@ -56,150 +53,181 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  int _selectedIndex = 1; // Indice iniziale selezionato per Home
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      // Logica per cambiare pagina o eseguire altre azioni in base all'indice
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('MyTEDx Talks'),
-        backgroundColor: const Color(0xFF1DB954), // Verde Spotify
-        elevation: 0,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color(0xFF1DB954),
-                const Color(0xFF1DB954).withOpacity(0.8)
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50.0),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius:
-                    BorderRadius.circular(30.0), // Arrotonda tutti gli angoli
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search for TED Talks...',
-                  hintStyle: TextStyle(color: Colors.grey.shade600),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                        30.0), // Arrotonda tutti gli angoli
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  suffixIcon:
-                      const Icon(Icons.search, color: Color(0xFF1DB954)),
+      backgroundColor:
+          const Color(0xFF313638), // Imposta lo sfondo al colore desiderato
+      body: Column(
+        children: [
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEB0028), // Colore di sfondo rosso TEDx
+                  borderRadius: BorderRadius.circular(30.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
-                style: const TextStyle(color: Colors.black),
-                onSubmitted: (_) => _search(),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText:
+                        'Search for TedX Episode...', // Testo del placeholder
+                    hintStyle: const TextStyle(
+                        color: Colors.white), // Colore testo placeholder
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: const Color(
+                        0xFFEB0028), // Colore di riempimento della barra
+                    suffixIcon: const Icon(Icons.search,
+                        color: Colors.white), // Icona bianca
+                  ),
+                  style: const TextStyle(
+                      color: Colors.white), // Colore del testo inserito
+                  onSubmitted: (_) => _search(),
+                ),
               ),
             ),
           ),
-        ),
-      ),
-      body: FutureBuilder<List<TedTalk>>(
-        future: _futureTedTalks,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No TED Talks found for the tag'));
-          } else {
-            final talks = snapshot.data ?? [];
-            return ListView.builder(
-              itemCount: talks.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailScreen(talk: talks[index]),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    margin: const EdgeInsets.all(12),
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+          Expanded(
+            child: FutureBuilder<List<TedTalk>>(
+              future: _futureTedTalks,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'No TED Talks found for the tag',
+                      style: TextStyle(color: Colors.white), // Colore testo
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (talks[index].imageUrl.isNotEmpty)
-                          ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(15)),
-                            child: Image.network(
-                              talks[index].imageUrl,
-                              height: 180,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+                  );
+                } else {
+                  final talks = snapshot.data ?? [];
+                  return ListView.builder(
+                    itemCount: talks.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailScreen(talk: talks[index]),
                             ),
+                          );
+                        },
+                        child: Card(
+                          color: Colors.grey[800], // Imposta il colore del Card
+                          margin: const EdgeInsets.all(12),
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            talks[index].title,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF1DB954), // Verde Spotify
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (talks[index].imageUrl.isNotEmpty)
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(15)),
+                                  child: Image.network(
+                                    talks[index].imageUrl,
+                                    height: 180,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  talks[index].title,
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white, //Titolo talk
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0),
+                                child: Text(
+                                  talks[index].description,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  talks[index].speakers,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.italic,
+                                    color: Color(0xFFEB0028),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Text(
-                            talks[index].description,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color:
-                                  Colors.white, // Colore bianco per leggibilità
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            talks[index].speakers, // Aggiungi il speaker
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontStyle: FontStyle.italic,
-                              color: Color(0xFFEB0028), // Rosso TEDx
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                      );
+                    },
+                  );
+                }
               },
-            );
-          }
-        },
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.grey[900],
+        selectedItemColor:
+            const Color(0xFFEB0028), // Colore per l'elemento selezionato
+        unselectedItemColor: Colors.white,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.playlist_play),
+            label: 'Playlist',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
       ),
     );
   }

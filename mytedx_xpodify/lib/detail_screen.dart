@@ -208,7 +208,7 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      backgroundColor: const Color(0xFF121212), // Sfondo scuro per contrasto
+      backgroundColor: const Color(0xFF313638), // Sfondo scuro per contrasto
     );
   }
 }
